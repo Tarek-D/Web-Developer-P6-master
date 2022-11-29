@@ -33,3 +33,10 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
 module.exports = app;
+
+
+// Limiter de connexion à la BDD pour éviter les attaques brute force 
+// Express Rate limit 
+
+
+// Rajouter HELMET 
