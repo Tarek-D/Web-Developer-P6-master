@@ -1,4 +1,5 @@
 const Sauce = require('../models/Sauce');
+const fs = require('fs');
 
 
 exports.getAllSauces = (req, res, next) => {
@@ -32,17 +33,20 @@ exports.createSauce = (req, res, next) => {
 }
 
 exports.modifySauce = (req, res, next) => {
+    // check user 
     Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
         .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
         .catch(error => res.status(400).json({ error }));
 }
 
 exports.deleteSauce = (req, res, next) => {
+    // check user
+    // DELETE IMAGE IN FOLDER
     Sauce.deleteOne({ _id: req.params.id })
         .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
         .catch(error => res.status(400).json({ error }));
 }
 
 exports.likeSauce = (req, res, next) => {
-    // Post likes or dislikes
+    // Post likes or dislikes with a switch
 }
