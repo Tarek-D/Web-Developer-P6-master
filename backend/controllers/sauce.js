@@ -27,7 +27,7 @@ exports.createSauce = (req, res, next) => {
     });
 
     sauce.save()
-        .then(() => { res.status(201).json({ message: 'Sauce enregistrée !' }) })
+        .then(() => { res.status(201).json({ message: 'Sauce saved' }) })
         .catch(error => { res.status(400).json({ error }) })
 }
 
@@ -39,7 +39,7 @@ exports.modifySauce = (req, res, next) => {
             }});
     
     Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
+        .then(() => res.status(200).json({ message: 'Sauce modified' }))
         .catch(error => res.status(400).json({ error }));
 }
 
@@ -73,7 +73,7 @@ exports.likeSauce = (req, res, next) => {
                     $push: { usersLiked: userId },
                     $inc: { likes: +1 }
                 })
-                .then(() => res.status(200).json({ message: 'liked' }))
+                .then(() => res.status(200).json({ message: 'like added' }))
                 .catch((error) => res.status(400).json({ error }))
             break;
 
@@ -89,7 +89,7 @@ exports.likeSauce = (req, res, next) => {
                     }
                     if (sauce.usersDisliked.includes(userId)) {
                         Sauce.updateOne({_id: sauceId }, {
-                                $pull: { usersDisliked: userId},
+                                $pull: { usersDisliked: userId },
                                 $inc: { dislikes: -1}
                             })
                             .then(() => res.status(200).json({ message: 'Dislike removed'}))
@@ -104,7 +104,7 @@ exports.likeSauce = (req, res, next) => {
                     $push: { usersDisliked: userId },
                     $inc: { dislikes: +1 }
                 })
-                .then(() => { res.status(200).json({ message: `Dislike`}) })
+                .then(() => { res.status(200).json({ message: 'Dislike added' }) })
                 .catch((error) => res.status(400).json({ error }))
             break;
         default:
