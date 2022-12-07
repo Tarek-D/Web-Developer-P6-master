@@ -5,16 +5,22 @@ const helmet = require("helmet")
 const path = require('path');
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const rateLimit = require('../middleware/rateLimiter')
+require('dotenv').config({ path : './config/.env' });
 
-require('dotenv').config();
 
-app.use(cors());
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000, // 1 minute
+	max: 50, // Limiter l'ip à faire 50 requêtes par window (ici 1mn)
+	standardHeaders: true, // Retourne `RateLimit-*` dans les headers
+	legacyHeaders: false, // Désactiver les headers `X-RateLimit-*`
+})
+
 app.use(express.json());
+app.use(limiter);
 
-mongoose.connect('mongodb+srv://tarek-piiquante:zudri1-parniq-qAbgof@cluster0.8hmeufm.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -28,8 +34,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
-app.use(helmet());
-app.use('/api/', rateLimit);
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "same-site" }
+}));
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
