@@ -34,8 +34,8 @@ mongoose.connect(process.env.MONGO,
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
-    .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+    .then(() => console.log('Connexion to MongoDB succeed'))
+    .catch(() => console.log('Connexion to MongoDB failed'));
 
 // sets up a middleware function that sets CORS (Cross-Origin Resource Sharing) headers to allow requests from any origin. 
 // These headers specify which HTTP methods are allowed and which headers are allowed in cross-origin requests.
